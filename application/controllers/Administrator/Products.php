@@ -53,12 +53,11 @@ class Products extends CI_Controller
     {
         $res = ['success' => false, 'message' => ''];
         try {
-            // $productObj = json_decode($this->input->raw_input_stream);
             $productObj = json_decode($this->input->post('data'));
 
-            $productNameCount = $this->db->query("select * from tbl_product where Product_Name = ?", $productObj->Product_Name)->num_rows();
+            $productNameCount = $this->db->query("select * from tbl_product where Product_Name = ? and model_no = ?", [$productObj->Product_Name, $productObj->model_no])->num_rows();
             if ($productNameCount > 0) {
-                $res = ['success' => false, 'message' => 'Product name already exists'];
+                $res = ['success' => false, 'message' => 'Model number already exists'];
                 echo json_encode($res);
                 exit;
             }
@@ -118,9 +117,9 @@ class Products extends CI_Controller
             // $productObj = json_decode($this->input->raw_input_stream);
             $productObj = json_decode($this->input->post('data'));
 
-            $productNameCount = $this->db->query("select * from tbl_product where Product_Name = ? and Product_SlNo != ?", [$productObj->Product_Name, $productObj->Product_SlNo])->num_rows();
+            $productNameCount = $this->db->query("select * from tbl_product where Product_Name = ? and model_no = ? and Product_SlNo != ?", [$productObj->Product_Name, $productObj->model_no, $productObj->Product_SlNo])->num_rows();
             if ($productNameCount > 0) {
-                $res = ['success' => false, 'message' => 'Product name already exists'];
+                $res = ['success' => false, 'message' => 'Model number already exists'];
                 echo json_encode($res);
                 exit;
             }
@@ -202,7 +201,7 @@ class Products extends CI_Controller
         $products = $this->db->query("
             select
                 p.*,
-                concat(p.Product_Name, ' - ', p.Product_Code) as display_text,
+                concat(p.Product_Name, ' - ', p.model_no, ' - ', p.Product_Code) as display_text,
                 pc.ProductCategory_Name,
                 br.brand_name,
                 u.Unit_Name
@@ -268,6 +267,7 @@ class Products extends CI_Controller
                 p.*,
                 pc.ProductCategory_Name,
                 b.brand_name,
+                b.model_no,
                 u.Unit_Name,
                 (select ifnull(sum(pd.PurchaseDetails_TotalQuantity), 0) 
                     from tbl_purchasedetails pd 

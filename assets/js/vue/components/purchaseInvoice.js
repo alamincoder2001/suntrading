@@ -40,6 +40,8 @@ const purchaseInvoice = Vue.component('purchase-invoice', {
                                 <tr>
                                     <td>Sl.</td>
                                     <td>Description</td>
+                                    <td>Model</td>
+                                    <td style="width:15%;">Brand</td>
                                     <td>Qnty</td>
                                     <td>Unit</td>
                                     <td>Unit Price</td>
@@ -50,6 +52,8 @@ const purchaseInvoice = Vue.component('purchase-invoice', {
                                 <tr v-for="(product, sl) in cart">
                                     <td>{{ sl + 1 }}</td>
                                     <td>{{ product.Product_Name }}</td>
+                                    <td>{{ product.model_no }}</td>
+                                    <td>{{ product.brand_name }}</td>
                                     <td>{{ product.PurchaseDetails_TotalQuantity }}</td>
                                     <td>{{ product.Unit_Name }}</td>
                                     <td>{{ product.PurchaseDetails_Rate }}</td>
@@ -312,11 +316,12 @@ const purchaseInvoice = Vue.component('purchase-invoice', {
                 <body>
                     <div class="container">
                         <div class="row">
-                            <div class="col-xs-2"><img src="/uploads/company_profile_thum/${this.currentBranch.Company_Logo_thum}" alt="Logo" style="height:80px;" /></div>
-                            <div class="col-xs-10" style="padding-top:20px;">
+                            <!--<div class="col-xs-2"><img src="/uploads/company_profile_thum/${this.currentBranch.Company_Logo_thum}" alt="Logo" style="height:80px;" /></div>-->
+                            <div class="col-xs-12"><img src="/uploads/branchwiseimage/${this.currentBranch.Company_Logo_org}" alt="Logo" style="height:120px;width:100%;" /></div>
+                            <!--<div class="col-xs-10" style="padding-top:20px;">
                                 <strong style="font-size:18px;">${this.currentBranch.Company_Name}</strong><br>
                                 <p style="white-space:pre-line;">${this.currentBranch.Repot_Heading}</p>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="row">
                             <div class="col-xs-12">

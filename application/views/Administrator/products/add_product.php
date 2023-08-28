@@ -90,7 +90,7 @@
 				<div class="form-group clearfix">
 					<label class="control-label col-md-4">Product Id:</label>
 					<div class="col-md-7">
-						<input type="text" class="form-control" v-model="product.Product_Code">
+						<input type="text" class="form-control" v-model="product.Product_Code"/>
 					</div>
 				</div>
 				<!-- <div class="form-group clearfix">
@@ -104,6 +104,13 @@
 					<label class="control-label col-md-4">Product Name:</label>
 					<div class="col-md-7">
 						<input type="text" class="form-control" v-model="product.Product_Name" required>
+					</div>
+				</div>
+
+				<div class="form-group clearfix">
+					<label class="control-label col-md-4">Model No:</label>
+					<div class="col-md-7">
+						<input type="text" class="form-control" v-model="product.model_no" required>
 					</div>
 				</div>
 
@@ -130,16 +137,16 @@
 						<v-select v-bind:options="units" v-model="selectedUnit" label="Unit_Name"></v-select>
 					</div>
 					<div class="col-md-1" style="padding:0;margin-left: -15px;"><a href="/unit" target="_blank" class="add-button"><i class="fa fa-plus"></i></a></div>
-				</div>
+				</div>				
+			</div>
+
+			<div class="col-md-5">
 				<div class="form-group clearfix">
 					<label class="control-label col-md-4">VAT:</label>
 					<div class="col-md-7">
 						<input type="text" class="form-control" v-model="product.vat">
 					</div>
 				</div>
-			</div>
-
-			<div class="col-md-5">
 				<div class="form-group clearfix">
 					<label class="control-label col-md-4">Re-order level:</label>
 					<div class="col-md-7">
@@ -219,6 +226,7 @@
 								<img src="uploads/no_image.jpg" style="width:60px;">
 							</td>
 							<td>{{ row.Product_Name }}</td>
+							<td>{{ row.model_no }}</td>
 							<td>{{ row.ProductCategory_Name }}</td>
 							<td>{{ row.Product_Purchase_Rate }}</td>
 							<td>{{ row.Product_SellingPrice }}</td>
@@ -269,6 +277,7 @@
 					Product_Name: '',
 					ProductCategory_ID: '',
 					brand: '',
+					model_no: '',
 					Product_ReOrederLevel: '',
 					Product_Purchase_Rate: '',
 					Product_SellingPrice: '',
@@ -302,6 +311,11 @@
 					{
 						label: 'Product Name',
 						field: 'Product_Name',
+						align: 'center'
+					},
+					{
+						label: 'Model',
+						field: 'model_no',
 						align: 'center'
 					},
 					{
@@ -480,8 +494,6 @@
 						this.product[key] = 0;
 					}
 				})
-
-				this.product.is_serial = false;
 				this.selectedCategory = null;
 				this.selectedUnit = null;
 				this.selectedBrand = null;

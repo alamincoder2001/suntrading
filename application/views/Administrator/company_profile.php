@@ -6,7 +6,46 @@
 	#branch .Inactive {
 		color: red;
 	}
+
+	#branch .add-button {
+		padding: 2.5px;
+		width: 28px;
+		background-color: #298db4;
+		display: block;
+		text-align: center;
+		color: white;
+	}
+
+	#branch .add-button:hover {
+		background-color: #41add6;
+		color: white;
+	}
+
+	#branch input[type="file"] {
+		display: none;
+	}
+
+	#branch .custom-file-upload {
+		border: 1px solid #ccc;
+		display: inline-block;
+		padding: 5px 12px;
+		cursor: pointer;
+		margin-top: 5px;
+		background-color: #298db4;
+		border: none;
+		color: white;
+	}
+
+	#branch .custom-file-upload:hover {
+		background-color: #41add6;
+	}
+
+	#customerImage {
+		height: 100%;
+	}
 </style>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 <div class="row">
 	<div class="col-xs-12">
 		<div class="col-sm-4 col-sm-offset-1">
@@ -176,12 +215,12 @@
 			<div id="branch">
 				<div class="row" style="margin-top: 15px;">
 					<div class="col-md-12">
-						<form class="form-horizontal" @submit.prevent="saveBranch">
+						<form class="form-horizontal" @submit.prevent="saveBranch(event)">
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right"> Branch Name </label>
 								<label class="col-sm-1 control-label no-padding-right">:</label>
 								<div class="col-sm-8">
-									<input type="text" placeholder="Branch Name" class="form-control" v-model="branch.name" required />
+									<input type="text" name="name" placeholder="Branch Name" class="form-control" v-model="branch.name" required />
 								</div>
 							</div>
 
@@ -189,7 +228,7 @@
 								<label class="col-sm-3 control-label no-padding-right"> Branch Title </label>
 								<label class="col-sm-1 control-label no-padding-right">:</label>
 								<div class="col-sm-8">
-									<input type="text" placeholder="Branch Title" class="form-control" v-model="branch.title" required />
+									<input type="text" name="title" placeholder="Branch Title" class="form-control" v-model="branch.title" required />
 								</div>
 							</div>
 
@@ -197,7 +236,24 @@
 								<label class="col-sm-3 control-label no-padding-right"> Branch Address </label>
 								<label class="col-sm-1 control-label no-padding-right">:</label>
 								<div class="col-sm-8">
-									<textarea class="form-control" placeholder="Branch Address" v-model="branch.address" required></textarea>
+									<textarea class="form-control" name="address" placeholder="Branch Address" v-model="branch.address" required></textarea>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-4"></div>
+								<div class="col-sm-8">
+									<label style="color: red;">(Required size: 1280px X 120px)</label>
+									<div style="margin:0;width: 100%;height:100px;border: 1px solid #ccc;overflow:hidden;">
+										<img style="width: 100%;" id="customerImage" v-if="imageUrl == '' || imageUrl == null" src="/assets/no_image.gif">
+										<img style="width: 100%;" id="customerImage" v-if="imageUrl != '' && imageUrl != null" v-bind:src="imageUrl">
+									</div>
+									<div style="text-align:left;">
+										<label class="custom-file-upload">
+											<input type="file" name="image" @change="previewImage" />
+											Select Image
+										</label>
+									</div>
 								</div>
 							</div>
 
@@ -253,12 +309,12 @@
 
 <script src="<?php echo base_url(); ?>assets/js/vue/vue.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/vue/axios.min.js"></script>
-<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
 <script>
-	CKEDITOR.replace('terms_condition', {
-		toolbar: 'Basic',
-		height: 300,
+	$(document).ready(function() {
+		$('#terms_condition').summernote({
+			height: 200,
+		});
 	});
 	new Vue({
 		el: '#branch',
@@ -268,8 +324,11 @@
 					branchId: 0,
 					name: '',
 					title: '',
-					address: ''
+					address: '',
+					old_image: '',
 				},
+				imageUrl: '',
+				selectedFile: null,
 				branches: []
 			}
 		},
@@ -283,13 +342,18 @@
 				})
 			},
 
-			saveBranch() {
+			saveBranch(event) {
+
 				let url = "/add_branch";
 				if (this.branch.branchId != 0) {
 					url = "/update_branch";
 				}
 
-				axios.post(url, this.branch).then(res => {
+				let formdata = new FormData(event.target);
+				formdata.append("branchId", this.branch.branchId)
+				formdata.append("old_image", this.branch.old_image)
+
+				axios.post(url, formdata).then(res => {
 					let r = res.data;
 					alert(r.message);
 					if (r.success) {
@@ -304,6 +368,8 @@
 				this.branch.name = branch.Brunch_name;
 				this.branch.title = branch.Brunch_title;
 				this.branch.address = branch.Brunch_address;
+				this.imageUrl = "uploads/branchwiseimage/" + branch.image
+				this.branch.old_image = branch.image
 			},
 
 			changeStatus(branchId) {
@@ -322,6 +388,16 @@
 				})
 			},
 
+			previewImage() {
+				if (event.target.files.length > 0) {
+					this.selectedFile = event.target.files[0];
+					this.imageUrl = URL.createObjectURL(this.selectedFile);
+				} else {
+					this.selectedFile = null;
+					this.imageUrl = null;
+				}
+			},
+
 			clearForm() {
 				this.branch = {
 					branchId: 0,
@@ -329,6 +405,8 @@
 					title: '',
 					address: ''
 				}
+				this.selectedFile = null;
+				this.imageUrl = null;
 			}
 		}
 	})
@@ -395,10 +473,3 @@
 		$('.froala-editor').froalaEditor()
 	});
 </script>
-<!-- TextArea editor -->
-<script type='text/javascript' src='<?php echo base_url(); ?>ckeditor/ckeditor.js'></script>
-
-<script type="text/javascript">
-	CKEDITOR.replace('Description');
-</script>
-<!-- end TextArea editor -->

@@ -98,7 +98,7 @@ const quotationInvoice = Vue.component("quotation-invoice", {
                                 <td><strong><u>TERMS & CONDITIONS</u></strong></td>
                             </tr>                            
                             <tr>
-                            <td>{{ quotation.terms_condition }}</td>
+                            <td style="text-align:justify;" v-html="quotation.terms_condition"></td>
                             </tr>                            
                         </table>
                     </div>
@@ -228,15 +228,15 @@ const quotationInvoice = Vue.component("quotation-invoice", {
                 <body>
                     <div class="container">
                         <div class="row">
-                            <div class="col-xs-2"><img src="/uploads/company_profile_thum/${
-                              this.companyProfile.Company_Logo_thum
-                            }" alt="Logo" style="height:80px;" /></div>
-                            <div class="col-xs-10" style="padding-top:20px;">
+                            <div class="col-xs-12"><img src="/uploads/branchwiseimage/${
+                              this.companyProfile.Company_Logo_org
+                            }" alt="Logo" style="height:120px;width:100%;" /></div>
+                            <!--<div class="col-xs-10" style="padding-top:20px;">
                                 <strong style="font-size:18px;">${
                                   this.companyProfile.Company_Name
                                 }</strong><br>
                                 ${this.companyProfile.Repot_Heading}
-                            </div>
+                            </div>-->
                         </div>
                         <div class="row">
                             <div class="col-xs-12">

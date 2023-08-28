@@ -94,6 +94,7 @@
         <tr>
            <th style="text-align:center;">SI No.</th>
            <th style="text-align:center;">Category</th>
+           <th style="text-align:center;">Brand</th>
            <th style="text-align:center;">Product Name</th>
            <th style="text-align:center;">Unit Price</th>
            <th style="text-align:center;">Quantity</th>
@@ -115,6 +116,7 @@
         <tr align="center">
             <td><?php echo $i; ?></td>
             <td><?php echo $rows->ProductCategory_Name; ?></td>
+            <td><?php echo $rows->brand_no; ?></td>
             <td><?php echo $rows->Product_Name; ?></td>
             <td><?php echo $rows->SaleDetails_Rate; ?></td>
             <td><?php echo $rows->SaleDetails_TotalQuantity; ?> </td>

@@ -425,6 +425,7 @@ class Page extends CI_Controller
         $data['Company_Name']    = $this->input->post('Company_name', true);
         $data['Repot_Heading']   = $this->input->post('Description', true);
         $data['terms_condition'] = $this->input->post('terms_condition', true);
+    
 
         $xx = $this->db->query("select * from tbl_company order by Company_SlNo desc limit 1")->row();
 
@@ -519,24 +520,32 @@ class Page extends CI_Controller
     {
         $res = ['success' => false, 'message' => ''];
         try {
-            $branch = json_decode($this->input->raw_input_stream);
+            // $branch = json_decode($this->input->raw_input_stream);
+            $name = $this->input->post('name');
+            $title = $this->input->post('title');
+            $address = $this->input->post('address');
 
-            $nameCount = $this->db->query("select * from tbl_brunch where Brunch_name = ?", $branch->name)->num_rows();
+            $nameCount = $this->db->query("select * from tbl_brunch where Brunch_name = ?", $name)->num_rows();
             if ($nameCount > 0) {
-                $res = ['success' => false, 'message' => $branch->name . ' already exists'];
+                $res = ['success' => false, 'message' => $name . ' already exists'];
                 echo json_encode($res);
                 exit;
             }
 
             $newBranch = array(
-                'Brunch_name' => $branch->name,
-                'Brunch_title' => $branch->title,
-                'Brunch_address' => $branch->address,
-                'Brunch_sales' => '2',
-                'add_by' => $this->session->userdata("FullName"),
-                'add_time' => date('Y-m-d H:i:s'),
-                'status' => 'a'
+                'Brunch_name'    => $name,
+                'Brunch_title'   => $title,
+                'Brunch_address' => $address,
+                'Brunch_sales'   => '2',
+                'add_by'         => $this->session->userdata("FullName"),
+                'add_time'       => date('Y-m-d H:i:s'),
+                'status'         => 'a'
             );
+
+            if (!empty($_FILES['image'])) {
+                $newBranch['image'] = basename($_FILES['image']['name']);
+                move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/branchwiseimage/' . basename($_FILES['image']['name']));
+            }
 
             $this->db->insert('tbl_brunch', $newBranch);
             $res = ['success' => true, 'message' => 'Branch added'];
@@ -551,23 +560,36 @@ class Page extends CI_Controller
     {
         $res = ['success' => false, 'message' => ''];
         try {
-            $branch = json_decode($this->input->raw_input_stream);
+            // $branch = json_decode($this->input->raw_input_stream);
+            $branchId = $this->input->post('branchId');
+            $name = $this->input->post('name');
+            $title = $this->input->post('title');
+            $address = $this->input->post('address');
+            $old_image = $this->input->post('old_image');
 
-            $nameCount = $this->db->query("select * from tbl_brunch where Brunch_name = ? and brunch_id != ?", [$branch->name, $branch->branchId])->num_rows();
+            $nameCount = $this->db->query("select * from tbl_brunch where Brunch_name = ? and brunch_id != ?", [$name, $branchId])->num_rows();
             if ($nameCount > 0) {
-                $res = ['success' => false, 'message' => $branch->name . ' already exists'];
+                $res = ['success' => false, 'message' => $name . ' already exists'];
                 echo json_encode($res);
                 exit;
             }
 
             $newBranch = array(
-                'Brunch_name' => $branch->name,
-                'Brunch_title' => $branch->title,
-                'Brunch_address' => $branch->address,
+                'Brunch_name' => $name,
+                'Brunch_title' => $title,
+                'Brunch_address' => $address,
                 'update_by' => $this->session->userdata("FullName")
             );
 
-            $this->db->set($newBranch)->where('brunch_id', $branch->branchId)->update('tbl_brunch');
+            if (!empty($_FILES['image'])) {
+                if (file_exists('./uploads/branchwiseimage/'.$old_image)) {
+                    unlink('./uploads/branchwiseimage/'.$old_image);
+                }
+                $newBranch['image'] = basename($_FILES['image']['name']);
+                move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/branchwiseimage/' . basename($_FILES['image']['name']));
+            }
+
+            $this->db->set($newBranch)->where('brunch_id', $branchId)->update('tbl_brunch');
             $res = ['success' => true, 'message' => 'Branch updated'];
         } catch (Exception $ex) {
             $res = ['success' => false, 'message' => $ex->getMessage()];

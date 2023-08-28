@@ -131,6 +131,8 @@
 							<th>Date</th>
 							<th>Supplier Name</th>
 							<th>Product Name</th>
+							<th>Brand</th>
+							<th>Model No.</th>
 							<th>Price</th>
 							<th>Quantity</th>
 							<th>Total</th>
@@ -144,6 +146,8 @@
 								<td>{{ purchase.PurchaseMaster_OrderDate }}</td>
 								<td>{{ purchase.Supplier_Name }}</td>
 								<td>{{ purchase.purchaseDetails[0].Product_Name }}</td>
+								<td>{{ purchase.purchaseDetails[0].brand_name }}</td>
+								<td>{{ purchase.purchaseDetails[0].model_no }}</td>
 								<td style="text-align:right;">{{ purchase.purchaseDetails[0].PurchaseDetails_Rate }}</td>
 								<td style="text-align:center;">{{ purchase.purchaseDetails[0].PurchaseDetails_TotalQuantity }}</td>
 								<td style="text-align:right;">{{ purchase.purchaseDetails[0].PurchaseDetails_TotalAmount }}</td>
@@ -158,13 +162,15 @@
 							<tr v-for="(product, sl) in purchase.purchaseDetails.slice(1)">
 								<td colspan="3" v-bind:rowspan="purchase.purchaseDetails.length - 1" v-if="sl == 0"></td>
 								<td>{{ product.Product_Name }}</td>
+								<td>{{ product.brand_name }}</td>
+								<td>{{ product.model_no }}</td>
 								<td style="text-align:right;">{{ product.PurchaseDetails_Rate }}</td>
 								<td style="text-align:center;">{{ product.PurchaseDetails_TotalQuantity }}</td>
 								<td style="text-align:right;">{{ product.PurchaseDetails_TotalAmount }}</td>
 								<td></td>
 							</tr>
 							<tr style="font-weight:bold;">
-								<td colspan="5" style="font-weight:normal;"><strong>Note: </strong>{{ purchase.PurchaseMaster_Description }}</td>
+								<td colspan="7" style="font-weight:normal;"><strong>Note: </strong>{{ purchase.PurchaseMaster_Description }}</td>
 								<td style="text-align:center;">Total Quantity<br>{{ purchase.purchaseDetails.reduce((prev, curr) => {return prev + parseFloat(curr.PurchaseDetails_TotalQuantity)}, 0) }}</td>
 								<td style="text-align:right;">
 									Total: {{ purchase.PurchaseMaster_TotalAmount }}<br>

@@ -11,7 +11,7 @@ const salesInvoice = Vue.component("sales-invoice", {
                 <div class="row">
                     <div class="col-xs-12 text-center">
                         <div _h098asdh>
-                            Bill
+                            <span style="font-size: 18px;border: 1px solid black;padding: 0 10px;">Bill</span>
                         </div>
                     </div>
                 </div>
@@ -40,6 +40,8 @@ const salesInvoice = Vue.component("sales-invoice", {
                                 <tr>
                                     <td>Sl.</td>
                                     <td>Description</td>
+                                    <td>Model</td>
+                                    <td style="width:13%;">Brand</td>
                                     <td>HS Code</td>
                                     <td>Origin</td>
                                     <td>Qnty</td>
@@ -52,6 +54,8 @@ const salesInvoice = Vue.component("sales-invoice", {
                                 <tr v-for="(product, sl) in cart">
                                     <td>{{ sl + 1 }}</td>
                                     <td style="text-align: left;">{{ product.Product_Name }}</td>
+                                    <td>{{ product.model_no }}</td>
+                                    <td>{{ product.brand_name }}</td>
                                     <td>{{ product.hs_code }}</td>
                                     <td>{{ product.origin }}</td>
                                     <td>{{ product.SaleDetails_TotalQuantity }}</td>
@@ -331,7 +335,7 @@ const salesInvoice = Vue.component("sales-invoice", {
                         </head>
                         <body>
                             <div style="text-align:center;">
-                                <img src="/uploads/company_profile_thum/${this.currentBranch.Company_Logo_org}" alt="Logo" style="height:80px;margin:0px;" /><br>
+                                <img src="/uploads/branchwiseimage/${this.currentBranch.Company_Logo_org}" alt="Logo" style="height:80px;margin:0px;" /><br>
                                 <strong style="font-size:18px;">${this.currentBranch.Company_Name}</strong><br>
                                 <p style="white-space:pre-line;">${this.currentBranch.Repot_Heading}</p>
                             </div>
@@ -360,11 +364,11 @@ const salesInvoice = Vue.component("sales-invoice", {
                     </head>
                     <body>
                         <div class="row">
-                            <div class="col-xs-2"><img src="/uploads/company_profile_thum/${this.currentBranch.Company_Logo_org}" alt="Logo" style="height:80px;" /></div>
-                            <div class="col-xs-10" style="padding-top:20px;">
+                            <div class="col-xs-12"><img src="/uploads/branchwiseimage/${this.currentBranch.Company_Logo_org}" alt="Logo" style="height:120px;width:100%;" /></div>
+                            <!--<div class="col-xs-10" style="padding-top:20px;">
                                 <strong style="font-size:18px;">${this.currentBranch.Company_Name}</strong><br>
                                 <p style="white-space:pre-line;">${this.currentBranch.Repot_Heading}</p>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
@@ -403,21 +407,21 @@ const salesInvoice = Vue.component("sales-invoice", {
                                         <td>
                                             <div class="row">
                                                 <div class="col-xs-12 text-center">
-                                                    <img src="/uploads/company_profile_thum/${
+                                                    <img src="/uploads/branchwiseimage/${
                                                       this.currentBranch
                                                         .Company_Logo_org
-                                                    }" alt="Logo" style="height:60px;margin-right:10px;" />
-                                                    <strong style="font-size:48px;text-transform:uppercase">${
+                                                    }" alt="Logo" style="height:120px;width:100%;" />
+                                                    <!--<strong style="font-size:48px;text-transform:uppercase">${
                                                       this.currentBranch
                                                         .Company_Name
-                                                    }</strong>
+                                                    }</strong>-->
                                                 </div>
-                                                <div class="col-xs-12">                                                    
+                                                <!--<div class="col-xs-12">                                                    
                                                     <p style="white-space:pre-line;text-align:center">${
                                                       this.currentBranch
                                                         .Repot_Heading
                                                     }</p>
-                                                </div>
+                                                </div>-->
                                             </div>
                                             <div class="row">
                                                 <div class="col-xs-12">

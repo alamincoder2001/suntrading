@@ -167,6 +167,7 @@ class Quotation extends CI_Controller
                     p.Product_Name,
                     p.Product_Purchase_Rate,
                     p.vat,
+                    p.model_no,
                     pc.ProductCategory_Name,
                     u.Unit_Name,
                     b.brand_name,

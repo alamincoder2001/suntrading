@@ -43,6 +43,9 @@
 	}
 </style>
 
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
 <div id="quotation" class="row">
 	<div class="col-xs-12 col-md-12 col-lg-12" style="border-bottom:1px #ccc solid;margin-bottom:5px;">
 		<div class="row">
@@ -174,7 +177,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"> Product </label>
 									<div class="col-sm-8">
-										<v-select v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
+										<v-select id="product" v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
 									</div>
 									<div class="col-sm-1" style="padding: 0;">
 										<a href="<?= base_url('product') ?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Product"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
@@ -239,8 +242,9 @@
 					<thead>
 						<tr class="">
 							<th style="width:10%;color:#000;">Sl</th>
-							<th style="width:25%;color:#000;">Category</th>
 							<th style="width:20%;color:#000;">Product Name</th>
+							<th style="width:10%;color:#000;">Model</th>
+							<th style="width:15%;color:#000;">Category</th>
 							<th style="width:7%;color:#000;">Qty</th>
 							<th style="width:8%;color:#000;">Rate</th>
 							<th style="width:15%;color:#000;display: none;" :style="{display: quotation.quotationId != '0' ? '' : 'none'}">Convert Rate</th>
@@ -251,8 +255,9 @@
 					<tbody style="display:none;" v-bind:style="{display: cart.length > 0 ? '' : 'none'}">
 						<tr v-for="(product, sl) in cart">
 							<td>{{ sl + 1 }}</td>
-							<td>{{ product.categoryName }}</td>
 							<td>{{ product.name }}</td>
+							<td>{{ product.model_no }}</td>
+							<td>{{ product.categoryName }}</td>
 							<td>{{ product.quantity }}</td>
 							<td>{{ product.salesRate }}</td>
 							<td style="display: none;" :style="{display: quotation.quotationId != '0' ? '' : 'none'}">
@@ -262,11 +267,11 @@
 							<td><a href="" v-on:click.prevent="removeFromCart(sl)"><i class="fa fa-trash"></i></a></td>
 						</tr>
 						<tr>
-							<td colspan="5">
-								<textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="companyProfile.terms_condition"></textarea>
+							<td colspan="6">
+								<textarea id="terms" v-html="companyProfile.terms_condition"></textarea>
 							</td>
-							<td style="font-weight: 600;padding: 15px 0px;font-size: 20px;">{{ quotation.total }}</td>
-							<td></td>
+							<!-- <td colspan="6">Total</td> -->
+							<td colspan="2" style="font-weight: 600;padding: 15px 0px;font-size: 20px;">{{ quotation.total }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -469,6 +474,13 @@
 <script src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
 
 <script>
+	function initializeSummernote() {
+		var $summernote = $('#terms');
+		$summernote.summernote({
+			height:200
+		});
+	}
+
 	Vue.component('v-select', VueSelect.VueSelect);
 	new Vue({
 		el: '#quotation',
@@ -547,15 +559,12 @@
 					symbol: '',
 					currency_name: 'Select'
 				},
-				companyProfile: {
-					terms_condition: '',
-				}
+				companyProfile: {}
 			}
 		},
 		created() {
 			this.quotation.quotationDate = moment().format('YYYY-MM-DD');
 			this.getBranches();
-			// this.getProducts();
 			this.getCompanyProfile();
 			this.getCustomers();
 			this.getBrands();
@@ -594,6 +603,7 @@
 					total: 0.00
 				}
 				this.getProducts();
+				document.querySelector("#product [type='search']").focus();
 			},
 			async getCustomers() {
 				await axios.post('/get_customers', {
@@ -640,6 +650,8 @@
 			getCompanyProfile() {
 				axios.get('/get_company_profile').then(res => {
 					this.companyProfile = res.data;
+					initializeSummernote();
+					$('#terms').summernote('code', this.companyProfile.terms_condition)
 				})
 			},
 			getBranches() {
@@ -659,6 +671,9 @@
 				this.selectedProduct.total = (parseFloat(this.selectedProduct.quantity) * parseFloat(this.selectedProduct.Product_SellingPrice)).toFixed(2);
 			},
 			productOnChange() {
+				if (this.selectedProduct.Product_SlNo == '') {
+					return
+				}
 				this.$refs.quantity.focus();
 			},
 			toggleProductPurchaseRate() {
@@ -669,6 +684,7 @@
 				let product = {
 					productCode: this.selectedProduct.Product_Code,
 					productId: this.selectedProduct.Product_SlNo,
+					model_no: this.selectedProduct.model_no,
 					categoryName: this.selectedProduct.ProductCategory_Name,
 					name: this.selectedProduct.Product_Name,
 					salesRate: this.selectedProduct.Product_SellingPrice,
@@ -722,11 +738,8 @@
 					return prev + parseFloat(curr.total)
 				}, 0).toFixed(2);
 
-				// this.quotation.vat = ((parseFloat(this.quotation.subTotal) * parseFloat(this.vatPercent)) / 100).toFixed(2);
-
 				if (event.target.id == 'vatTaka') {
 					this.vatPercent = (parseFloat(this.quotation.vat) / parseFloat(this.quotation.subTotal) * 100).toFixed(2);
-					// console.log('sohel');
 				} else {
 					this.quotation.vat = ((parseFloat(this.quotation.subTotal) * parseFloat(this.vatPercent)) / 100).toFixed(2);
 				}
@@ -779,19 +792,10 @@
 					return;
 				}
 
-				// this.saleOnProgress = true;
-
-				// await this.getCustomerDue();
-
 				let url = "/add_sales";
-				// if (this.quotation.salesId != 0) {
-				// 	url = "/update_sales";
-				// 	this.sales.previousDue = parseFloat((this.sales.previousDue - this.sales_due_on_update)).toFixed(2);
-				// }
 
 				if (parseFloat(this.selectedCustomer.Customer_Credit_Limit) < (parseFloat(this.quotation.due) + parseFloat(this.quotation.previousDue))) {
 					alert(`Customer credit limit (${this.selectedCustomer.Customer_Credit_Limit}) exceeded`);
-					// this.saleOnProgress = false;
 					return;
 				}
 
@@ -815,9 +819,6 @@
 					data.customer = this.selectedCustomer;
 				}
 
-				// console.log(data);
-				// return;
-
 				await axios.post(url, data).then(async res => {
 					let r = res.data;
 					if (r.success) {
@@ -831,7 +832,6 @@
 						}
 					} else {
 						alert(r.message);
-						// this.saleOnProgress = false;
 					}
 				})
 			},
@@ -849,9 +849,11 @@
 				if (this.quotation.quotationId != 0) {
 					url = "/update_quotation";
 				}
+				var summernoteInstance = $('#terms').summernote();
+				var editorContent = summernoteInstance.summernote('code');
 
 				this.quotation.quotationFrom = this.selectedBranch.brunch_id;
-				this.quotation.terms_condition = this.companyProfile.terms_condition;
+				this.quotation.terms_condition = editorContent;
 				this.quotation.currency_name = this.selectedCurrency.symbol;
 				this.quotation.customerId = this.selectedCustomer.Customer_SlNo;
 
@@ -859,8 +861,6 @@
 					quotation: this.quotation,
 					cart: this.cart
 				}
-				// console.log(data);
-				// return;
 				axios.post(url, data).then(async res => {
 					let r = res.data;
 					alert(r.message);
@@ -904,6 +904,7 @@
 						let cartProduct = {
 							productCode: product.Product_Code,
 							productId: product.Product_IDNo,
+							model_no: product.model_no,
 							categoryName: product.ProductCategory_Name,
 							name: product.Product_Name,
 							salesRate: product.SaleDetails_Rate,

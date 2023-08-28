@@ -212,8 +212,8 @@
 					<thead>
 						<tr class="">
 							<th style="width:10%;color:#000;">Sl</th>
-							<th style="width:15%;color:#000;">Product Code</th>
-							<th style="width:20%;color:#000;">Product Name</th>
+							<th style="width:20%;color:#000;">Description</th>
+							<th style="width:12%;color:#000;">Model</th>
 							<th style="width:15%;color:#000;">Category</th>
 							<th style="width:7%;color:#000;">Qty</th>
 							<th style="width:8%;color:#000;">Rate</th>
@@ -224,8 +224,8 @@
 					<tbody style="display:none;" v-bind:style="{display: cart.length > 0 ? '' : 'none'}">
 						<tr v-for="(product, sl) in cart">
 							<td>{{ sl + 1 }}</td>
-							<td>{{ product.productCode }}</td>
-							<td>{{ product.name }}</td>
+							<td>{{ product.productCode }}-{{ product.name }}</td>
+							<td>{{ product.model_no }}</td>
 							<td>{{ product.categoryName }}</td>
 							<td>{{ product.quantity }}</td>
 							<td>{{ product.salesRate }}</td>
@@ -469,7 +469,7 @@
 					due: 0.00,
 					isService: '<?php echo $isService; ?>',
 					note: '',
-					payment_method: '',
+					payment_method: 'Cash',
 					bank_name: '',
 				},
 				bankAccount: [],
@@ -676,6 +676,7 @@
 					productCode: this.selectedProduct.Product_Code,
 					categoryName: this.selectedProduct.ProductCategory_Name,
 					name: this.selectedProduct.Product_Name,
+					model_no: this.selectedProduct.model_no,
 					salesRate: this.selectedProduct.Product_SellingPrice,
 					vat: this.selectedProduct.vat,
 					quantity: this.selectedProduct.quantity,
@@ -894,6 +895,7 @@
 							productId: product.Product_IDNo,
 							categoryName: product.ProductCategory_Name,
 							name: product.Product_Name,
+							model_no: product.model_no,
 							salesRate: product.SaleDetails_Rate,
 							vat: product.SaleDetails_Tax,
 							quantity: product.SaleDetails_TotalQuantity,

@@ -198,18 +198,20 @@
 					<thead>
 						<tr>
 							<th style="width:4%;color:#000;">SL</th>
-							<th style="width:20%;color:#000;">Product Name</th>
+							<th style="width:30%;color:#000;">Product Name</th>
+							<th style="width:12%;color:#000;">Model</th>
 							<th style="width:13%;color:#000;">Category</th>
-							<th style="width:8%;color:#000;">Purchase Rate</th>
+							<th style="width:8%;color:#000;">Rate</th>
 							<th style="width:5%;color:#000;">Quantity</th>
 							<th style="width:13%;color:#000;">Total Amount</th>
-							<th style="width:20%;color:#000;">Action</th>
+							<th style="width:10%;color:#000;">Action</th>
 						</tr>
 					</thead>
 					<tbody style="display:none;" v-bind:style="{display: cart.length > 0 ? '' : 'none'}">
 						<tr v-for="(product, sl) in cart">
 							<td>{{ sl + 1}}</td>
 							<td>{{ product.name }}</td>
+							<td>{{ product.model_no }}</td>
 							<td>{{ product.categoryName }}</td>
 							<td>{{ product.purchaseRate }}</td>
 							<td>{{ product.quantity }}</td>
@@ -218,16 +220,16 @@
 						</tr>
 
 						<tr>
-							<td colspan="7"></td>
+							<td colspan="8"></td>
 						</tr>
 
 						<tr style="font-weight: bold;">
-							<td colspan="4">Note</td>
+							<td colspan="5">Note</td>
 							<td colspan="3">Total</td>
 						</tr>
 
 						<tr>
-							<td colspan="4"><textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="purchase.note"></textarea></td>
+							<td colspan="5"><textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="purchase.note"></textarea></td>
 							<td colspan="3" style="padding-top: 15px;font-size:18px;">{{ purchase.total }}</td>
 						</tr>
 					</tbody>
@@ -582,14 +584,15 @@
 				}
 
 				let product = {
-					productId: this.selectedProduct.Product_SlNo,
-					name: this.selectedProduct.Product_Name,
-					categoryId: this.selectedProduct.ProductCategory_ID,
+					productId   : this.selectedProduct.Product_SlNo,
+					name        : this.selectedProduct.Product_Name,
+					model_no    : this.selectedProduct.model_no,
+					categoryId  : this.selectedProduct.ProductCategory_ID,
 					categoryName: this.selectedProduct.ProductCategory_Name,
 					purchaseRate: this.selectedProduct.Product_Purchase_Rate,
-					salesRate: this.selectedProduct.Product_SellingPrice,
-					quantity: this.selectedProduct.quantity,
-					total: this.selectedProduct.total
+					salesRate   : this.selectedProduct.Product_SellingPrice,
+					quantity    : this.selectedProduct.quantity,
+					total       : this.selectedProduct.total
 				}
 
 				this.cart.push(product);
@@ -753,6 +756,7 @@
 							id: product.PurchaseDetails_SlNo,
 							productId: product.Product_IDNo,
 							name: product.Product_Name,
+							model_no: product.model_no,
 							categoryId: product.ProductCategory_ID,
 							categoryName: product.ProductCategory_Name,
 							purchaseRate: product.PurchaseDetails_Rate,

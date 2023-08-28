@@ -44,15 +44,21 @@ class Purchase extends CI_Controller
                 select
                     pd.*,
                     p.Product_Name,
+                    p.model_no,
                     p.Product_Code,
                     p.ProductCategory_ID,
                     p.Product_SellingPrice,
+                    p.model_no,
+                    b.brand_name,
+                    b.hs_code,
+                    b.origin,
                     pc.ProductCategory_Name,
                     u.Unit_Name
                 from tbl_purchasedetails pd 
-                join tbl_product p on p.Product_SlNo = pd.Product_IDNo
-                join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
-                join tbl_unit u on u.Unit_SlNo = p.Unit_ID
+                left join tbl_product p on p.Product_SlNo = pd.Product_IDNo
+                left join tbl_brand b on b.brand_SiNo = p.brand
+                left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                left join tbl_unit u on u.Unit_SlNo = p.Unit_ID
                 where pd.PurchaseMaster_IDNo = '$data->purchaseId'
             ")->result();
         }
@@ -1048,11 +1054,19 @@ class Purchase extends CI_Controller
             $purchase->purchaseDetails = $this->db->query("
                 select 
                     pd.*,
+                    p.Product_Code,
                     p.Product_Name,
-                    pc.ProductCategory_Name
+                    p.model_no,
+                    b.brand_name,
+                    b.hs_code,
+                    b.origin,
+                    pc.ProductCategory_Name,
+                    u.Unit_Name
                 from tbl_purchasedetails pd
-                join tbl_product p on p.Product_SlNo = pd.Product_IDNo
-                join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                left join tbl_product p on p.Product_SlNo = pd.Product_IDNo
+                left join tbl_brand b on b.brand_SiNo = p.brand
+                left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                left join tbl_unit u on u.Unit_SlNo = p.Unit_ID
                 where pd.PurchaseMaster_IDNo = ?
                 and pd.Status != 'd'
             ", $purchase->PurchaseMaster_SlNo)->result();

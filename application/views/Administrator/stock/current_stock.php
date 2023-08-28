@@ -87,6 +87,7 @@
 						<tr>
 							<th>Product Id</th>
 							<th>Product Name</th>
+							<th style="width: 10%;">Model</th>
 							<th>Category</th>
 							<th>Current Quantity</th>
 							<th>Rate</th>
@@ -96,7 +97,8 @@
 					<tbody>
 						<tr v-for="product in stock">
 							<td>{{ product.Product_Code }}</td>
-							<td>{{ product.Product_Name }}</td>
+							<td style="text-align: left;">{{ product.Product_Name }}</td>
+							<td>{{ product.model_no }}</td>
 							<td>{{ product.ProductCategory_Name }}</td>
 							<td>{{ product.current_quantity }} {{ product.Unit_Name }}</td>
 							<td>{{ product.Product_Purchase_Rate | decimal }}</td>
@@ -105,7 +107,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<th colspan="5" style="text-align:right;">Total Stock Value</th>
+							<th colspan="6" style="text-align:right;">Total Stock Value</th>
 							<th>{{ totalStockValue | decimal }}</th>
 						</tr>
 					</tfoot>
@@ -119,6 +121,7 @@
 						<tr>
 							<th>Product Id</th>
 							<th>Product Name</th>
+							<th>Model</th>
 							<th>Category</th>
 							<th>Purchased Quantity</th>
 							<th>Purchase Returned Quantity</th>
@@ -136,6 +139,7 @@
 						<tr v-for="product in stock">
 							<td>{{ product.Product_Code }}</td>
 							<td>{{ product.Product_Name }}</td>
+							<td>{{ product.model_no }}</td>
 							<td>{{ product.ProductCategory_Name }}</td>
 							<td>{{ product.purchased_quantity }}</td>
 							<td>{{ product.purchase_returned_quantity }}</td>
@@ -151,7 +155,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<th colspan="12" style="text-align:right;">Total Stock Value</th>
+							<th colspan="13" style="text-align:right;">Total Stock Value</th>
 							<th>{{ totalStockValue | decimal }}</th>
 						</tr>
 					</tfoot>

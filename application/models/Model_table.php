@@ -588,6 +588,7 @@ class Model_Table extends CI_Model
                     (select (ci.purchase_quantity + ci.sales_return_quantity + ci.transfer_to_quantity) - (ci.sales_quantity + ci.purchase_return_quantity + ci.damage_quantity + ci.transfer_from_quantity)) as current_quantity,
                     p.Product_Name,
                     p.Product_Code,
+                    p.model_no,
                     p.Product_ReOrederLevel,
                     p.Product_Purchase_Rate,
                     (select (p.Product_Purchase_Rate * current_quantity)) as stock_value,

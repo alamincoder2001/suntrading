@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-xs-12 text-center">
                         <div _h098asdh>
-                            Chalan
+                            Delivery Challan
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-xs-4 text-right">
                         <strong>Sales by:</strong> {{ sales.AddBy }}<br>
-                        <strong>Invoice No.:</strong> {{ sales.SaleMaster_InvoiceNo }}<br>
+                        <strong>Chalan No.:</strong> {{ sales.SaleMaster_InvoiceNo }}<br>
                         <strong>Sales Date:</strong> {{ sales.SaleMaster_SaleDate }} {{ formatDateTime(sales.AddTime, 'h:mm a') }}
                     </div>
                 </div>
@@ -41,7 +41,9 @@
                                     <td>Sl.</td>
                                     <td>Description</td>
                                     <td>Brand</td>
+                                    <td>Model No.</td>
                                     <td>Qnty</td>
+                                    <td style="width: 20%;">Remarks</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,7 +51,9 @@
                                     <td>{{ sl + 1 }}</td>
                                     <td style="text-align: left;">{{ product.Product_Name }}</td>
                                     <td>{{ product.brand_name }}</td>
+                                    <td>{{ product.model_no }}</td>
                                     <td>{{ product.SaleDetails_TotalQuantity }} {{ product.Unit_Name }}</td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>

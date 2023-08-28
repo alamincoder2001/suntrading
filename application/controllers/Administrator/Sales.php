@@ -281,12 +281,7 @@ class Sales extends CI_Controller
                 c.Customer_Mobile,
                 c.Customer_Address,
                 e.Employee_Name,
-                br.Brunch_name,
-                (
-                    select ifnull(count(*), 0) from tbl_saledetails sd 
-                    where sd.SaleMaster_IDNo = 1
-                    and sd.Status != 'd'
-                ) as total_products
+                br.Brunch_name
             from tbl_salesmaster sm
             left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
             left join tbl_employee e on e.Employee_SlNo = sm.employee_id
@@ -301,11 +296,19 @@ class Sales extends CI_Controller
             $sale->saleDetails = $this->db->query("
                 select 
                     sd.*,
+                    p.Product_Code,
                     p.Product_Name,
-                    pc.ProductCategory_Name
+                    p.model_no,
+                    b.brand_name,
+                    b.hs_code,
+                    b.origin,
+                    pc.ProductCategory_Name,
+                    u.Unit_Name
                 from tbl_saledetails sd
-                join tbl_product p on p.Product_SlNo = sd.Product_IDNo
-                join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                left join tbl_product p on p.Product_SlNo = sd.Product_IDNo
+                left join tbl_brand b on b.brand_SiNo = p.brand
+                left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                left join tbl_unit u on u.Unit_SlNo = p.Unit_ID
                 where sd.SaleMaster_IDNo = ?
                 and sd.Status != 'd'
             ", $sale->SaleMaster_SlNo)->result();
@@ -341,22 +344,23 @@ class Sales extends CI_Controller
         }
 
         if (isset($data->salesId) && $data->salesId != 0 && $data->salesId != '') {
-            $clauses .= " and SaleMaster_SlNo = '$data->salesId'";
+            $clauses .= " and sm.SaleMaster_SlNo = '$data->salesId'";
             $saleDetails = $this->db->query("
                 select 
                     sd.*,
                     p.Product_Code,
                     p.Product_Name,
+                    p.model_no,
                     b.brand_name,
                     b.hs_code,
                     b.origin,
                     pc.ProductCategory_Name,
                     u.Unit_Name
                 from tbl_saledetails sd
-                join tbl_product p on p.Product_SlNo = sd.Product_IDNo
-                join tbl_brand b on b.brand_SiNo = p.brand
-                join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
-                join tbl_unit u on u.Unit_SlNo = p.Unit_ID
+                left join tbl_product p on p.Product_SlNo = sd.Product_IDNo
+                left join tbl_brand b on b.brand_SiNo = p.brand
+                left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                left join tbl_unit u on u.Unit_SlNo = p.Unit_ID
                 where sd.SaleMaster_IDNo = ?
             ", $data->salesId)->result();
 
