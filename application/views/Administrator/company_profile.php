@@ -312,10 +312,7 @@
 
 <script>
 	$(document).ready(function() {
-		$('#terms_condition').summernote({
-			height: 200,
-		});
-		let code = <?php echo json_encode($selected->terms_condition); ?>;
+        let code = <?php echo json_encode($selected->terms_condition); ?>;
 		$('#terms_condition').summernote('code', code);
 	});
 	new Vue({
@@ -461,9 +458,7 @@
 			processData: false,
 			contentType: false,
 			success: function(data) {
-				//$("#Company").html(data);
 				alert("Update Success");
-				//setTimeout( function() {$.fancybox.close(); },1200);
 				location.reload();
 			}
 		});

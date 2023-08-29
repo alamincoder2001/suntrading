@@ -424,7 +424,7 @@ class Page extends CI_Controller
 
         $data['Company_Name']    = $this->input->post('Company_name', true);
         $data['Repot_Heading']   = $this->input->post('Description', true);
-        $data['terms_condition'] = $this->input->post('terms_condition', true);
+        $data['terms_condition'] = $this->input->post('terms_condition');
 
         $xx = $this->db->query("select * from tbl_company order by Company_SlNo desc limit 1")->row();
 
@@ -433,7 +433,11 @@ class Page extends CI_Controller
             $data['print_type'] = $inpt;
             $this->db->update('tbl_company', $data);
             $id = '1';
-            redirect('Administrator/Page/company_profile');
+            if ($this->input->post('fromajax', true)) {
+                echo json_encode("Successfully update compay profile");
+            } else {
+                redirect('Administrator/Page/company_profile');
+            }
         } else {
             $image = $this->upload->do_upload('companyLogo');
             $images = $this->upload->data();
@@ -462,7 +466,11 @@ class Page extends CI_Controller
             $data['print_type'] = $inpt;
             $this->db->update('tbl_company', $data);
             $id = '1';
-            redirect('Administrator/Page/company_profile');
+            if ($this->input->post('fromajax', true)) {
+                echo json_encode("Successfully update compay profile");
+            } else {
+                redirect('Administrator/Page/company_profile');
+            }
         }
         //$this->load->view('Administrator/company_profile');
     }
@@ -581,8 +589,8 @@ class Page extends CI_Controller
             );
 
             if (!empty($_FILES['image'])) {
-                if (file_exists('./uploads/branchwiseimage/'.$old_image)) {
-                    unlink('./uploads/branchwiseimage/'.$old_image);
+                if (file_exists('./uploads/branchwiseimage/' . $old_image)) {
+                    unlink('./uploads/branchwiseimage/' . $old_image);
                 }
                 $newBranch['image'] = basename($_FILES['image']['name']);
                 move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/branchwiseimage/' . basename($_FILES['image']['name']));
