@@ -110,7 +110,7 @@
 				<div class="form-group clearfix">
 					<label class="control-label col-md-4">Model No:</label>
 					<div class="col-md-7">
-						<input type="text" class="form-control" v-model="product.model_no" required>
+						<input type="text" class="form-control" v-model="product.model_no" />
 					</div>
 				</div>
 

@@ -90,7 +90,7 @@
 					<div class="form-group" style="margin-top:15px">
 						<label class="control-label" for="form-field-1"> Terms Condition </label>
 						<div>
-							<textarea id="terms_condition" name="terms_condition" class="form-control"><?php echo $selected->terms_condition; ?></textarea>
+							<textarea id="terms_condition" name="terms_condition" class="form-control"></textarea>
 						</div>
 					</div>
 
@@ -315,6 +315,8 @@
 		$('#terms_condition').summernote({
 			height: 200,
 		});
+		let code = <?php echo json_encode($selected->terms_condition); ?>;
+		$('#terms_condition').summernote('code', code);
 	});
 	new Vue({
 		el: '#branch',

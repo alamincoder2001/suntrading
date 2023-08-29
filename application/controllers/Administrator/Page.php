@@ -425,7 +425,6 @@ class Page extends CI_Controller
         $data['Company_Name']    = $this->input->post('Company_name', true);
         $data['Repot_Heading']   = $this->input->post('Description', true);
         $data['terms_condition'] = $this->input->post('terms_condition', true);
-    
 
         $xx = $this->db->query("select * from tbl_company order by Company_SlNo desc limit 1")->row();
 

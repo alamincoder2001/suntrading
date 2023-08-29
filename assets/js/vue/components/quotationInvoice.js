@@ -47,6 +47,7 @@ const quotationInvoice = Vue.component("quotation-invoice", {
                                 <tr>
                                     <td>Sl.</td>
                                     <td>Product</td>
+                                    <td>Model</td>
                                     <td>H.S. Code</td>
                                     <td>Qnty</td>
                                     <td>Unit</td>
@@ -58,6 +59,7 @@ const quotationInvoice = Vue.component("quotation-invoice", {
                                 <tr v-for="(product, sl) in cart">
                                     <td>{{ sl + 1 }}</td>
                                     <td style="text-align: left;">{{ product.Product_Name }}</td>
+                                    <td>{{ product.model_no }}</td>
                                     <td>{{ product.hs_code }}</td>
                                     <td>{{ product.SaleDetails_TotalQuantity }}</td>
                                     <td>{{ product.Unit_Name }}</td>
@@ -93,14 +95,9 @@ const quotationInvoice = Vue.component("quotation-invoice", {
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <table _terms style="margin: 20px 0px;">
-                            <tr>
-                                <td><strong><u>TERMS & CONDITIONS</u></strong></td>
-                            </tr>                            
-                            <tr>
-                            <td style="text-align:justify;" v-html="quotation.terms_condition"></td>
-                            </tr>                            
-                        </table>
+                            <strong><u>TERMS & CONDITIONS</u></strong>
+                                                       
+                            <div class="termscondition" v-html="quotation.terms_condition"></div>
                     </div>
                 </div>
             </div>
@@ -200,6 +197,10 @@ const quotationInvoice = Vue.component("quotation-invoice", {
                 table[_terms] td{
                     white-space: pre-wrap;
                 }
+                .termscondition table{
+                    width: 100% !important;
+                    margin:0 !important;
+                }
             `;
       document.head.appendChild(this.style);
     },
@@ -217,7 +218,7 @@ const quotationInvoice = Vue.component("quotation-invoice", {
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                    <title>Invoice</title>
+                    <title>Quotation Invoice</title>
                     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
                     <style>
                         body, table{
@@ -229,7 +230,7 @@ const quotationInvoice = Vue.component("quotation-invoice", {
                     <div class="container">
                         <div class="row">
                             <div class="col-xs-12"><img src="/uploads/branchwiseimage/${
-                              this.companyProfile.Company_Logo_org
+                              this.currentBranch.Company_Logo_org
                             }" alt="Logo" style="height:120px;width:100%;" /></div>
                             <!--<div class="col-xs-10" style="padding-top:20px;">
                                 <strong style="font-size:18px;">${
