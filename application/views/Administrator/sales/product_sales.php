@@ -654,6 +654,9 @@
 				this.productStock = '';
 			},
 			async productOnChange() {
+				if (this.selectedProduct.Product_SlNo == '') {
+					return
+				}
 				if ((this.selectedProduct.Product_SlNo != '' || this.selectedProduct.Product_SlNo != 0) && this.sales.isService == 'false') {
 					this.productStock = await axios.post('/get_product_stock', {
 						productId: this.selectedProduct.Product_SlNo
@@ -742,10 +745,9 @@
 				// }, 0);
 
 				if (event.target.id == 'vatTaka') {
-					this.vatPercent = (parseFloat(this.sales.vat) / parseFloat(this.sales.subTotal) * 100).toFixed(2);
-					// console.log('sohel');
+					this.vatPercent = (parseFloat(this.sales.vat) / parseFloat(this.sales.total) * 100).toFixed(2);
 				} else {
-					this.sales.vat = ((parseFloat(this.sales.subTotal) * parseFloat(this.vatPercent)) / 100).toFixed(2);
+					this.sales.vat = ((parseFloat(this.sales.total) * parseFloat(this.vatPercent)) / 100).toFixed(2);
 				}
 
 
