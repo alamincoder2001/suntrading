@@ -167,8 +167,8 @@ const quotationInvoice = Vue.component("quotation-invoice", {
       this.style.innerHTML = `
                 div[_h098asdh]{
                     background-color:#e0e0e0;
-                    font-weight: bold;
-                    font-size:15px;
+                    font-weight: bolder;
+                    font-size:18px;
                     margin-bottom:15px;
                     padding: 5px;
                 }

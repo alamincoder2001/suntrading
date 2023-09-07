@@ -11,7 +11,7 @@ const salesInvoice = Vue.component("sales-invoice", {
                 <div class="row">
                     <div class="col-xs-12 text-center">
                         <div _h098asdh>
-                            <span style="font-size: 18px;border: 1px solid black;padding: 0 10px;">Bill</span>
+                            <span style="font-size: 18px;border: 1px solid black;padding: 0 10px;">BILL</span>
                         </div>
                     </div>
                 </div>
@@ -95,12 +95,12 @@ const salesInvoice = Vue.component("sales-invoice", {
                                 <td style="text-align:right">{{ sales.SaleMaster_SubTotalAmount }}</td>
                             </tr>
                             <tr>
-                                <td><strong>VAT {{ ((sales.SaleMaster_TaxAmount * 100) / sales.SaleMaster_SubTotalAmount) }}%</strong></td>
-                                <td style="text-align:right">{{ sales.SaleMaster_TaxAmount }}</td>
-                            </tr>
-                            <tr>
                                 <td><strong>Discount:</strong></td>
                                 <td style="text-align:right">{{ sales.SaleMaster_TotalDiscountAmount }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>VAT {{ parseFloat((sales.SaleMaster_TaxAmount * 100) / sales.SaleMaster_SubTotalAmount).toFixed(2) }}%</strong></td>
+                                <td style="text-align:right">{{ sales.SaleMaster_TaxAmount }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Transport Cost:</strong></td>
