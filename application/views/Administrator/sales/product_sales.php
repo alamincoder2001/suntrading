@@ -299,21 +299,6 @@
 									<tr>
 										<td>
 											<div class="form-group">
-												<label class="col-sm-12 control-label no-padding-right"> Vat </label>
-												<div class="col-sm-4">
-													<input type="number" class="form-control" v-model="vatPercent" v-on:input="calculateTotal" />
-												</div>
-												<label class="col-sm-1 control-label no-padding-right">%</label>
-												<div class="col-sm-7">
-													<input type="number" id="vatTaka" class="form-control" v-model="sales.vat" v-on:input="calculateTotal" />
-												</div>
-											</div>
-										</td>
-									</tr>
-
-									<tr>
-										<td>
-											<div class="form-group">
 												<label class="col-xs-12 control-label no-padding-right">Discount Persent</label>
 
 												<div class="col-xs-4">
@@ -326,6 +311,21 @@
 													<input type="number" id="discount" class="form-control" v-model="sales.discount" v-on:input="calculateTotal" />
 												</div>
 
+											</div>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>
+											<div class="form-group">
+												<label class="col-sm-12 control-label no-padding-right"> Vat </label>
+												<div class="col-sm-4">
+													<input type="number" class="form-control" v-model="vatPercent" v-on:input="calculateTotal" />
+												</div>
+												<label class="col-sm-1 control-label no-padding-right">%</label>
+												<div class="col-sm-7">
+													<input type="number" id="vatTaka" class="form-control" v-model="sales.vat" v-on:input="calculateTotal" />
+												</div>
 											</div>
 										</td>
 									</tr>
