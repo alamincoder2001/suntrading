@@ -301,11 +301,11 @@
 											<div class="form-group">
 												<label class="col-xs-12 control-label no-padding-right">Discount Persent</label>
 
-												<div class="col-xs-4">
+												<div class="col-xs-4 no-padding-right">
 													<input type="number" id="discountPercent" class="form-control" v-model="discountPercent" v-on:input="calculateTotal" />
 												</div>
 
-												<label class="col-xs-1 control-label no-padding-right">%</label>
+												<label class="col-xs-1 control-label no-padding-left">%</label>
 
 												<div class="col-xs-7">
 													<input type="number" id="discount" class="form-control" v-model="sales.discount" v-on:input="calculateTotal" />
@@ -318,12 +318,12 @@
 									<tr>
 										<td>
 											<div class="form-group">
-												<label class="col-sm-12 control-label no-padding-right"> Vat </label>
-												<div class="col-sm-4">
+												<label class="col-xs-12 control-label no-padding-right"> Vat </label>
+												<div class="col-xs-4 no-padding-right">
 													<input type="number" class="form-control" v-model="vatPercent" v-on:input="calculateTotal" />
 												</div>
-												<label class="col-sm-1 control-label no-padding-right">%</label>
-												<div class="col-sm-7">
+												<label class="col-xs-1 control-label no-padding-left">%</label>
+												<div class="col-xs-7">
 													<input type="number" id="vatTaka" class="form-control" v-model="sales.vat" v-on:input="calculateTotal" />
 												</div>
 											</div>
@@ -740,21 +740,18 @@
 					return prev + parseFloat(curr.total)
 				}, 0).toFixed(2);
 
-				// this.sales.vat = this.cart.reduce((prev, curr) => {
-				// 	return +prev + +(curr.total * (curr.vat / 100))
-				// }, 0);
-
-				if (event.target.id == 'vatTaka') {
-					this.vatPercent = (parseFloat(this.sales.vat) / parseFloat(this.sales.total) * 100).toFixed(2);
-				} else {
-					this.sales.vat = ((parseFloat(this.sales.total) * parseFloat(this.vatPercent)) / 100).toFixed(2);
-				}
-
-
 				if (event.target.id == 'discountPercent') {
 					this.sales.discount = ((parseFloat(this.sales.subTotal) * parseFloat(this.discountPercent)) / 100).toFixed(2);
 				} else {
 					this.discountPercent = (parseFloat(this.sales.discount) / parseFloat(this.sales.subTotal) * 100).toFixed(2);
+				}
+
+				let total = parseFloat(parseFloat(this.sales.subTotal) - parseFloat(this.sales.discount)).toFixed(2);
+
+				if (event.target.id == 'vatTaka') {
+					this.vatPercent = (parseFloat(this.sales.vat) / parseFloat(total) * 100).toFixed(2);
+				} else {
+					this.sales.vat = ((parseFloat(total) * parseFloat(this.vatPercent)) / 100).toFixed(2);
 				}
 
 				this.sales.total = ((parseFloat(this.sales.subTotal) + parseFloat(this.sales.vat) + parseFloat(this.sales.transportCost)) - parseFloat(this.sales.discount)).toFixed(2);
